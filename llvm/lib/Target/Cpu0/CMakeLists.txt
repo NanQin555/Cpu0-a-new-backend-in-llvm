@@ -1,3 +1,4 @@
+add_llvm_component_group(Cpu0)
 
 set (LLVM_TARGET_DEFINITIONS Cpu0.td)
 
@@ -16,8 +17,19 @@ add_public_tablegen_target(Cpu0CommonTableGen)
 # Cpu0CodeGen should match with LLVMBuild.txt Cpu0CodeGen
 add_llvm_target(Cpu0CodeGen
   Cpu0TargetMachine.cpp
+
+  LINK_COMPONENTS
+  CodeGen Core MC
+  Cpu0Desc
+  Cpu0Info
+  SelectionDAG
+  Support
+  Target
+
+  ADD_TO_COMPONENT
+  Cpu0
   )
 
 # Should match with "subdirectories = MCTargetDesc TargetInfo" in LLVMBuild.txt
-add_subdirectory(TargetInfo)
 add_subdirectory(MCTargetDesc)
+add_subdirectory(TargetInfo)

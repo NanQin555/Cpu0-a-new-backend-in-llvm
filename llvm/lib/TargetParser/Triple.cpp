@@ -578,7 +578,7 @@ static Triple::ArchType parseArch(StringRef ArchName) {
     .Case("loongarch64", Triple::loongarch64)
     .Case("dxil", Triple::dxil)
     .Case("xtensa", Triple::xtensa)
-    .Cases("cpu0", "cpu0eb", "cpu0allegrex", Tripel::cpu0)
+    .Cases("cpu0", "cpu0eb", "cpu0allegrex", Triple::cpu0)
     .Cases("cpu0el", "cpu0allegrexel", Triple::cpu0el)
     .Default(Triple::UnknownArch);
 
