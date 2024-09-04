@@ -9,8 +9,8 @@
 
 #include "Cpu0.h"
 #include "llvm/IR/Module.h"
-#include "llvm/Support/TargetRegistry.h"
-
+#include "llvm/MC/TargetRegistry.h"
+#include "Cpu0TargetInfo.hpp"
 using namespace llvm;
 
 Target &llvm::getTheCpu0Target() {

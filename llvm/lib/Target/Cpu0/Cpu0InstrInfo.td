@@ -120,13 +120,13 @@ class StoreM<bits<8> op, string instrAsm, PatFrag opNode, RegisterClass regClass
 // 32-bit load
 multiclass LoadM32<bits<8> op, string instrAsm,
                    PatFrag opNode, bit pseudo=0> {
-  def #NAME# : LoadM<op, instrAsm, opNode, GPROut, mem, pseudo>;
+  def load32 : LoadM<op, instrAsm, opNode, GPROut, mem, pseudo>;
 }
 
 // 32-bit store
 multiclass StoreM32<bits<8> op, string instrAsm,
                     PatFrag opNode, bit pseudo=0> {
-  def #NAME# : StoreM<op, instrAsm, opNode, CPURegs, mem, pseudo>;
+  def store32 : StoreM<op, instrAsm, opNode, CPURegs, mem, pseudo>;
 }
 
 // JumpFR

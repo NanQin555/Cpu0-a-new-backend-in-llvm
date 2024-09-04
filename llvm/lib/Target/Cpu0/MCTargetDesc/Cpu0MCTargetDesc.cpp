@@ -11,7 +11,6 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include "Cpu0MCTargetDesc.hpp"
 #include "llvm/MC/MachineLocation.h"
 #include "llvm/MC/MCELFStreamer.h"
 #include "llvm/MC/MCInstrAnalysis.h"
@@ -23,18 +22,22 @@
 #include "llvm/Support/CommandLine.h"
 #include "llvm/Support/ErrorHandling.h"
 #include "llvm/Support/FormattedStream.h"
-#include "llvm/Support/TargetRegistry.hpp"
+#include "llvm/MC/TargetRegistry.h"
 
 using namespace llvm;
 
+#define GET_REGINFO_MC_DESC
+#define GET_REGINFO_ENUM
+#include "Cpu0GenRegisterInfo.inc"
+
+#define GET_INSTRINFO_ENUM
+#define GET_INSTRINFO_SCHED_ENUM
 #define GET_INSTRINFO_MC_DESC
 #include "Cpu0GenInstrInfo.inc"
 
 #define GET_SUBTARGETINFO_MC_DESC
 #include "Cpu0GenSubtargetInfo.inc"
 
-#define GET_REGINFO_MC_DESC
-#include "Cpu0GenRegisterInfo.inc"
 
 extern "C" void LLVMInitializeCpu0TargetMC() {
 }

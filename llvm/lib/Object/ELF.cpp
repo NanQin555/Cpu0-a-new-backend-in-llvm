@@ -183,7 +183,7 @@ StringRef llvm::object::getELFRelocationTypeName(uint32_t Machine,
     break;
   case ELF::EM_CPU0:
     switch (Type) {
-#include "llvm/BinaryFormat/ELFRelocs/CPU0.def"
+#include "llvm/BinaryFormat/ELFRelocs/Cpu0.def"
     default:
       break; 
     }
