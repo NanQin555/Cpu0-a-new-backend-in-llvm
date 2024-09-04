@@ -320,6 +320,7 @@ enum {
   EM_VE = 251,            // NEC SX-Aurora VE
   EM_CSKY = 252,          // C-SKY 32-bit processor
   EM_LOONGARCH = 258,     // LoongArch
+  EM_CPU0 = 999,          // Tutorial Backend Cpu0
 };
 
 // Object file classes.
@@ -932,6 +933,19 @@ enum : unsigned {
 // ELF Relocation types for MSP430
 enum {
 #include "ELFRelocs/MSP430.def"
+};
+
+// Cpu0 Specific e_flags
+enum : unsigned {
+  EF_CPU0_NOREORDER = 0x00000001,
+  EF_CPU0_PIC       = 0x00000002,
+  EF_CPU_ARCH_32    = 0x50000000,
+  EF_CPU0_ARCH      = 0xf0000000,
+};
+
+// ELF Relocation types for Cpu0
+enum {
+#include "ELFRelocs/Cpu0.def"
 };
 
 // ELF Relocation type for VE.
