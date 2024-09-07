@@ -38,8 +38,6 @@ using namespace llvm;
 
 #define DEBUG_TYPE "cpu0-lower"
 
-#define GET_REGINFO_MC_DESC
-#define GET_REGINFO_ENUM
 #include "Cpu0GenRegisterInfo.inc"
 
 const char *Cpu0TargetLowering::getTargetNodeName(unsigned Opcode) const {

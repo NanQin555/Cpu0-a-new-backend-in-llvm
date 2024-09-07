@@ -25,7 +25,6 @@
 
 #define DEBUG_TYPE "cpu0-reg-info"
 
-#define GET_REGINFO_ENUM
 #define GET_REGINFO_TARGET_DESC
 #include "Cpu0GenRegisterInfo.inc"
 
