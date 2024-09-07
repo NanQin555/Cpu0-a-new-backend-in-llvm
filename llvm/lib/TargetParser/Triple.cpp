@@ -1642,6 +1642,8 @@ Triple Triple::get64BitArchVariant() const {
   case Triple::tcele:
   case Triple::xcore:
   case Triple::xtensa:
+  case Triple::cpu0:
+  case Triple::cpu0el:
     T.setArch(UnknownArch);
     break;
 

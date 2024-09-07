@@ -21,6 +21,8 @@ add_public_tablegen_target(Cpu0CommonTableGen)
 
 # Cpu0CodeGen should match with LLVMBuild.txt Cpu0CodeGen
 add_llvm_target(Cpu0CodeGen
+  Cpu0ISelDAGToDAG.cpp
+  Cpu0SEISelDAGToDAG.cpp
   Cpu0TargetMachine.cpp
   Cpu0InstrInfo.cpp
   Cpu0ISelLowering.cpp
@@ -35,7 +37,8 @@ add_llvm_target(Cpu0CodeGen
   Cpu0TargetObjectFile.cpp
   Cpu0AsmPrinter.cpp
   Cpu0MCInstLower.cpp
-
+  Cpu0AnalyzeImmediate.cpp
+  
   LINK_COMPONENTS
   CodeGen Core MC
   Cpu0Desc

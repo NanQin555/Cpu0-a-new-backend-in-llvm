@@ -37,7 +37,10 @@ void Cpu0InstPrinter::printInst(const MCInst *MI, raw_ostream &O,
                                 StringRef Annot, const MCSubtargetInfo &STI) {
   // Try to print any aliases first
   if (!printAliasInstr(MI, O))
-    printAnnotation(O, Annot);
+    // printInstruction(MI, O) defined in Cpu0GenAsmWriter.inc which came from
+    // Cpu0.td indicate.
+    printInstruction(MI, O);
+  printAnnotation(O, Annot);
 }
 
 void Cpu0InstPrinter::printOperand(const MCInst *MI, unsigned OpNo,

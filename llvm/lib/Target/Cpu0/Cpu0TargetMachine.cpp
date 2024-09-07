@@ -1,19 +1,20 @@
-// //===-- Cpu0TargetMachine.cpp - Define TargetMachine for Cpu0 ---*- C++ -*-===//
-// //
-// //                    The LLVM Compiler Infrastructure
-// //
-// // This file is distributed under the University of Illinois Open Source
-// // License. See LICENSE.TXT for details.
-// //
-// //===----------------------------------------------------------------------===//
-// //
-// // Implements the info about Cpu0 target spec
-// //
-// //===----------------------------------------------------------------------===//
+//===-- Cpu0TargetMachine.cpp - Define TargetMachine for Cpu0 ---*- C++ -*-===//
+//
+//                    The LLVM Compiler Infrastructure
+//
+// This file is distributed under the University of Illinois Open Source
+// License. See LICENSE.TXT for details.
+//
+//===----------------------------------------------------------------------===//
+//
+// Implements the info about Cpu0 target spec
+//
+//===----------------------------------------------------------------------===//
 
 #include "Cpu0TargetMachine.hpp"
 #include "Cpu0.h"
 #include "Cpu0TargetObjectFile.hpp"
+#include "Cpu0SEISelDAGToDAG.h"
 
 #include "llvm/IR/LegacyPassManager.h"
 #include "llvm/CodeGen/Passes.h"
@@ -145,9 +146,17 @@ public:
   const Cpu0Subtarget &getCpu0Subtarget() const {
     return *getCpu0TargetMachine().getSubtargetImpl();
   }
+  bool addInstSelector() override;
 };
 } // end namespace
 
 TargetPassConfig *Cpu0TargetMachine::createPassConfig(PassManagerBase &PM) {
   return new Cpu0PassConfig(*this, PM);
+}
+
+// Install an instruction selector pass using
+// the ISelDAG to generate Cpu0 code
+bool Cpu0PassConfig::addInstSelector() {
+  addPass(createCpu0SEISelDAG(getCpu0TargetMachine(), getOptLevel()));
+  return false;
 }
