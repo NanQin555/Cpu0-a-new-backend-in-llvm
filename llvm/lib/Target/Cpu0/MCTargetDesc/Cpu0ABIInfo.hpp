@@ -1,4 +1,4 @@
-//===-- Cpu0ABIInfo.h - Information about Cpu0 ABI --------------*- C++ -*-===//
+//===-- Cpu0ABIInfo.hpp - Information about Cpu0 ABI ------------*- C++ -*-===//
 //
 //                    The LLVM Compiler Infrastructure
 //
@@ -11,7 +11,7 @@
 #define LLVM_LIB_TARGET_CPU0_MCTARGETDESC_CPU0ABIINFO_H
 
 #include "llvm/ADT/ArrayRef.h"
-#include "llvm/ADT/Triple.h"
+#include "llvm/TargetParser/Triple.h"
 #include "llvm/IR/CallingConv.h"
 #include "llvm/MC/MCRegisterInfo.h"
 

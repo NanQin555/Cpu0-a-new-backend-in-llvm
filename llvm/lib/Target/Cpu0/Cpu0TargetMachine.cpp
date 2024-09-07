@@ -57,8 +57,9 @@ static std::string computeDataLayout(const Triple &TT, StringRef CPU,
 }
 
 static Reloc::Model getEffectiveRelocModel(bool JIT,
-                                           Optional<Reloc::Model> RM) {
-  if (!RM.hasValue() || JIT)
+                                           std::optional<Reloc::Model> RM) {
+  // if (!RM.hasValue() || JIT)
+  if (!RM.has_value() || JIT)
     return Reloc::Static;
   return *RM;
 }
@@ -71,14 +72,14 @@ static Reloc::Model getEffectiveRelocModel(bool JIT,
 Cpu0TargetMachine::Cpu0TargetMachine(const Target &T, const Triple &TT,
                                      StringRef CPU, StringRef FS,
                                      const TargetOptions &Options,
-                                     Optional<Reloc::Model> RM,
-                                     Optional<CodeModel::Model> CM,
-                                     CodeGenOpt::Level OL, bool JIT,
+                                     std::optional<Reloc::Model> RM,
+                                     std::optional<CodeModel::Model> CM,
+                                     CodeGenOptLevel OL, bool JIT,
                                      bool isLittle)
     : LLVMTargetMachine(T, computeDataLayout(TT, CPU, Options, isLittle), TT,
                         CPU, FS, Options, getEffectiveRelocModel(JIT, RM),
                         getEffectiveCodeModel(CM, CodeModel::Small), OL),
-      isLittle(isLittle), TLOF(llvm::make_unique<Cpu0TargetObjectFile>()),
+      isLittle(isLittle), TLOF(std::make_unique<Cpu0TargetObjectFile>()),
       ABI(Cpu0ABIInfo::computeTargetABI()),
       DefaultSubtarget(TT, CPU, FS, isLittle, *this) {
   initAsmInfo();
@@ -91,9 +92,9 @@ void Cpu0ebTargetMachine::anchor() { }
 Cpu0ebTargetMachine::Cpu0ebTargetMachine(const Target &T, const Triple &TT,
                                          StringRef CPU, StringRef FS,
                                          const TargetOptions &Options,
-                                         Optional<Reloc::Model> RM,
-                                         Optional<CodeModel::Model> CM,
-                                         CodeGenOpt::Level OL, bool JIT)
+                                         std::optional<Reloc::Model> RM,
+                                         std::optional<CodeModel::Model> CM,
+                                         CodeGenOptLevel OL, bool JIT)
     : Cpu0TargetMachine(T, TT, CPU, FS, Options, RM, CM, OL, JIT, false) { }
 
 void Cpu0elTargetMachine::anchor() { }
@@ -101,9 +102,9 @@ void Cpu0elTargetMachine::anchor() { }
 Cpu0elTargetMachine::Cpu0elTargetMachine(const Target &T, const Triple &TT,
                                          StringRef CPU, StringRef FS,
                                          const TargetOptions &Options,
-                                         Optional<Reloc::Model> RM,
-                                         Optional<CodeModel::Model> CM,
-                                         CodeGenOpt::Level OL, bool JIT)
+                                         std::optional<Reloc::Model> RM,
+                                         std::optional<CodeModel::Model> CM,
+                                         CodeGenOptLevel OL, bool JIT)
     : Cpu0TargetMachine(T, TT, CPU, FS, Options, RM, CM, OL, JIT, true) { }
 
 const Cpu0Subtarget *
@@ -124,7 +125,7 @@ Cpu0TargetMachine::getSubtargetImpl(const Function &F) const {
     // creation will depend on the TM and the code generation flags on the
     // function that reside in TargetOptions.
     resetTargetOptions(F);
-    I = llvm::make_unique<Cpu0Subtarget>(TargetTriple, CPU, FS, isLittle,
+    I = std::make_unique<Cpu0Subtarget>(TargetTriple, CPU, FS, isLittle,
                                          *this);
   }
   return I.get();

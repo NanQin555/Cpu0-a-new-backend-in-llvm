@@ -42,5 +42,5 @@ bool Cpu0FrameLowering::hasFP(const MachineFunction &MF) const {
 
   return MF.getTarget().Options.DisableFramePointerElim(MF) ||
          MFI.hasVarSizedObjects() || MFI.isFrameAddressTaken() ||
-         TRI->needsStackRealignment(MF);
+         TRI->hasStackRealignment(MF);
 }

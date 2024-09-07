@@ -33,11 +33,13 @@ using namespace llvm;
 #define GET_INSTRINFO_ENUM
 #define GET_INSTRINFO_SCHED_ENUM
 #define GET_INSTRINFO_MC_DESC
+#define GET_INSTRINFO_MC_HELPER_DECLS
 #include "Cpu0GenInstrInfo.inc"
 
+
+#define GET_SUBTARGETINFO_ENUM
 #define GET_SUBTARGETINFO_MC_DESC
 #include "Cpu0GenSubtargetInfo.inc"
-
 
 extern "C" void LLVMInitializeCpu0TargetMC() {
 }

@@ -23,10 +23,21 @@
 #include "llvm/CodeGen/TargetSubtargetInfo.h"
 #include <string>
 
+
+// #define GET_SUBTARGETINFO_ENUM
+// // #define GET_SUBTARGETINFO_MACRO
+// // #define GET_SUBTARGETINFO_MC_DESC
+// // #define GET_SUBTARGETINFO_TARGET_DESC
+// #define GET_SUBTARGETINFO_HEADER
+// #define GET_SUBTARGETINFO_CTOR
+// #include "Cpu0GenSubtargetInfo.inc"
+
 #define GET_SUBTARGETINFO_HEADER
 #include "Cpu0GenSubtargetInfo.inc"
 
 namespace llvm {
+
+
 class StringRef;
 
 class Cpu0TargetMachine;
@@ -73,7 +84,7 @@ public:
 
   // This constructor initializes the data members to match that
   // of the specified triple.
-  Cpu0Subtarget(const Triple &TT, const std::string &CPU, const std::string &FS,
+  Cpu0Subtarget(const Triple &TT, StringRef &CPU, StringRef &FS,
                 bool little, const Cpu0TargetMachine &_TM);
 
   // Parses features string setting specified

@@ -22,7 +22,7 @@ protected:
 
 public:
   explicit Cpu0FrameLowering(const Cpu0Subtarget &sti, unsigned Alignment)
-    : TargetFrameLowering(StackGrowsDown, Alignment, 0, Alignment),
+    : TargetFrameLowering(StackGrowsDown, Align(Alignment), 0, Align(Alignment), true),
       STI(sti) { }
 
   static const Cpu0FrameLowering *create(const Cpu0Subtarget &ST);

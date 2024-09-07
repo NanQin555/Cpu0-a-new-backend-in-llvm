@@ -17,6 +17,7 @@
 #include "Cpu0.h"
 #include "llvm/CodeGen/TargetRegisterInfo.h"
 
+#define GET_REGINFO_ENUM
 #define GET_REGINFO_HEADER
 #include "Cpu0GenRegisterInfo.inc"
 
@@ -44,12 +45,12 @@ public:
   bool trackLivenessAfterRegAlloc(const MachineFunction &MF) const override;
 
   /// Stack Frame Processing Methods
-  void eliminateFrameIndex(MachineBasicBlock::iterator II,
+  bool eliminateFrameIndex(MachineBasicBlock::iterator II,
                            int SPAdj, unsigned FIOperandNum,
                            RegScavenger *RS = nullptr) const override;
 
   /// Debug information queries.
-  unsigned getFrameRegister(const MachineFunction &MF) const override;
+  Register getFrameRegister(const MachineFunction &MF) const override;
 
   /// \brief Return GPR register class.
   virtual const TargetRegisterClass *intRegClass(unsigned Size) const = 0;

@@ -23,10 +23,11 @@
 #include "llvm/Support/ErrorHandling.h"
 #include "llvm/Support/raw_ostream.h"
 
+#define DEBUG_TYPE "cpu0-reg-info"
+
+#define GET_REGINFO_ENUM
 #define GET_REGINFO_TARGET_DESC
 #include "Cpu0GenRegisterInfo.inc"
-
-#define DEBUG_TYPE "cpu0-reg-info"
 
 using namespace llvm;
 
@@ -56,8 +57,14 @@ getReservedRegs(const MachineFunction &MF) const {
   };
   BitVector Reserved(getNumRegs());
 
-  for (unsigned I = 0; I < array_lengthof(ReservedCPURegs); ++I)
-    Reserved.set(ReservedCPURegs[I]);
+  auto &Subtarget = MF.getSubtarget<Cpu0Subtarget>();
+  for (size_t Reg = 0; Reg < getNumRegs(); Reg++) {
+    Reserved.set(ReservedCPURegs[Reg]);
+    // if (Subtarget.isRegisterReservedByUser(Reg))
+    //   markSuperRegs(Reserved, Reg);
+  }
+  // for (unsigned I = 0; I < array_lengthof(ReservedCPURegs); ++I)
+  //   Reserved.set(ReservedCPURegs[I]);
 
   return Reserved;
 }
@@ -66,23 +73,19 @@ getReservedRegs(const MachineFunction &MF) const {
 // FrameIndex represent objects inside a abstract stack.
 // We must replace FrameIndex with an stack/frame pointer
 // direct reference.
-void Cpu0RegisterInfo::
-eliminateFrameIndex(MachineBasicBlock::iterator II, int SPAdj,
-                    unsigned FIOperandNum, RegScavenger *RS) const {
+bool Cpu0RegisterInfo::eliminateFrameIndex(MachineBasicBlock::iterator II, int SPAdj,
+                                           unsigned FIOperandNum, RegScavenger *RS) const {
 }
 
-bool
-Cpu0RegisterInfo::requiresRegisterScavenging(const MachineFunction &MF) const {
+bool Cpu0RegisterInfo::requiresRegisterScavenging(const MachineFunction &MF) const {
   return true;
 }
 
-bool
-Cpu0RegisterInfo::trackLivenessAfterRegAlloc(const MachineFunction &MF) const {
+bool Cpu0RegisterInfo::trackLivenessAfterRegAlloc(const MachineFunction &MF) const {
   return true;
 }
 
-unsigned Cpu0RegisterInfo::
-getFrameRegister(const MachineFunction &MF) const {
+Register Cpu0RegisterInfo::getFrameRegister(const MachineFunction &MF) const {
   const TargetFrameLowering *TFI = MF.getSubtarget().getFrameLowering();
   return TFI->hasFP(MF) ? (Cpu0::FP) :
                           (Cpu0::SP);

@@ -16,6 +16,7 @@
 
 #include "MCTargetDesc/Cpu0ABIInfo.hpp"
 #include "Cpu0Subtarget.hpp"
+#include "TargetInfo/Cpu0TargetInfo.hpp"
 #include "llvm/CodeGen/Passes.h"
 #include "llvm/CodeGen/SelectionDAGISel.h"
 #include "llvm/CodeGen/TargetFrameLowering.h"
@@ -35,8 +36,8 @@ class Cpu0TargetMachine : public LLVMTargetMachine {
 public:
   Cpu0TargetMachine(const Target &T, const Triple &TT, StringRef CPU,
                     StringRef FS, const TargetOptions &Options,
-                    Optional<Reloc::Model> RM, Optional<CodeModel::Model> CM,
-                    CodeGenOpt::Level OL, bool JIT, bool isLittle);
+                    std::optional<Reloc::Model> RM, std::optional<CodeModel::Model> CM,
+                    CodeGenOptLevel OL, bool JIT, bool isLittle);
   ~Cpu0TargetMachine() override;
 
   const Cpu0Subtarget *getSubtargetImpl() const {
@@ -62,9 +63,9 @@ class Cpu0ebTargetMachine : public Cpu0TargetMachine {
 public:
   Cpu0ebTargetMachine(const Target &T, const Triple &TT, StringRef CPU,
                       StringRef FS, const TargetOptions &Options,
-                      Optional<Reloc::Model> RM,
-                      Optional<CodeModel::Model> CM,
-                      CodeGenOpt::Level OL, bool JIT);
+                      std::optional<Reloc::Model> RM,
+                      std::optional<CodeModel::Model> CM,
+                      CodeGenOptLevel OL, bool JIT);
 };
 // This is default little endian Cpu032 target machine.
 class Cpu0elTargetMachine : public Cpu0TargetMachine {
@@ -72,9 +73,9 @@ class Cpu0elTargetMachine : public Cpu0TargetMachine {
 public:
   Cpu0elTargetMachine(const Target &T, const Triple &TT, StringRef CPU,
                       StringRef FS, const TargetOptions &Options,
-                      Optional<Reloc::Model> RM,
-                      Optional<CodeModel::Model> CM,
-                      CodeGenOpt::Level OL, bool JIT);
+                      std::optional<Reloc::Model> RM,
+                      std::optional<CodeModel::Model> CM,
+                      CodeGenOptLevel OL, bool JIT);
 };
 } // End llvm namespace
 
