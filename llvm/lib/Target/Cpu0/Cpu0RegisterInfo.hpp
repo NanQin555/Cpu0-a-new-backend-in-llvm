@@ -17,7 +17,6 @@
 #include "Cpu0.h"
 #include "llvm/CodeGen/TargetRegisterInfo.h"
 
-#define GET_REGINFO_ENUM
 #define GET_REGINFO_HEADER
 #include "Cpu0GenRegisterInfo.inc"
 

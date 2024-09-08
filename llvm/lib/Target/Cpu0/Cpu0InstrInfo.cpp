@@ -23,6 +23,7 @@
 using namespace llvm;
 
 #define GET_INSTRINFO_CTOR_DTOR
+#define GET_INSTRINFO_NAMED_OPS
 #include "Cpu0GenInstrInfo.inc"
 
 // Pin the vtable to this file
@@ -47,8 +48,8 @@ Cpu0InstrInfo::GetMemOperand(MachineBasicBlock &MBB, int FI,
                              MachineMemOperand::Flags Flags) const {
   MachineFunction &MF = *MBB.getParent();
   MachineFrameInfo &MFI = MF.getFrameInfo();
-  unsigned Align = MFI.getObjectAlignment(FI);
 
   return MF.getMachineMemOperand(MachinePointerInfo::getFixedStack(MF, FI),
-                                 Flags, MFI.getObjectSize(FI), Align);
+                                 Flags, MFI.getObjectSize(FI), 
+                                 MFI.getObjectAlign(FI));
 }

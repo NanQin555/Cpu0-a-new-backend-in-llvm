@@ -14,7 +14,7 @@
 #include "Cpu0TargetMachine.hpp"
 #include "Cpu0.h"
 #include "Cpu0TargetObjectFile.hpp"
-#include "Cpu0SEISelDAGToDAG.h"
+#include "Cpu0SEISelDAGToDAG.hpp"
 
 #include "llvm/IR/LegacyPassManager.h"
 #include "llvm/CodeGen/Passes.h"

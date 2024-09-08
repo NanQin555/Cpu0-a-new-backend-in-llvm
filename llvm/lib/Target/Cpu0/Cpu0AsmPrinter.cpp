@@ -35,7 +35,7 @@
 #include "llvm/MC/MCStreamer.h"
 #include "llvm/MC/MCSymbol.h"
 #include "llvm/Support/raw_ostream.h"
-#include "llvm/Support/TargetRegistry.h"
+#include "llvm/MC/TargetRegistry.h"
 #include "llvm/Target/TargetLoweringObjectFile.h"
 #include "llvm/Target/TargetOptions.h"
 
@@ -49,10 +49,10 @@ bool Cpu0AsmPrinter::runOnMachineFunction(MachineFunction &MF) {
   return true;
 }
 
-//@EmitInstruction {
-//- EmitInstruction() must exists or will have run time error.
-void Cpu0AsmPrinter::EmitInstruction(const MachineInstr *MI) {
-//@EmitInstruction body {
+//@emitInstruction {
+//- emitInstruction() must exists or will have run time error.
+void Cpu0AsmPrinter::emitInstruction(const MachineInstr *MI) {
+//@emitInstruction body {
   if (MI->isDebugValue()) {
     SmallString<128> Str;
     raw_svector_ostream OS(Str);
@@ -69,14 +69,14 @@ void Cpu0AsmPrinter::EmitInstruction(const MachineInstr *MI) {
   do {
 
     if (I->isPseudo())
-      llvm_unreachable("Pseudo opcode found in EmitInstruction()");
+      llvm_unreachable("Pseudo opcode found in emitInstruction()");
 
     MCInst TmpInst0;
     MCInstLowering.Lower(&*I, TmpInst0);
-    OutStreamer->EmitInstruction(TmpInst0, getSubtargetInfo());
+    OutStreamer->emitInstruction(TmpInst0, getSubtargetInfo());
   } while ((++I != E) && I->isInsideBundle()); // Delay slot check
 }
-//@EmitInstruction }
+//@emitInstruction }
 
 //===----------------------------------------------------------------------===//
 //
@@ -168,13 +168,13 @@ void Cpu0AsmPrinter::emitFrameDirective() {
   unsigned stackSize = MF->getFrameInfo().getStackSize();
 
   if (OutStreamer->hasRawTextSupport())
-    OutStreamer->EmitRawText("\t.frame\t$" +
+    OutStreamer->emitRawText("\t.frame\t$" +
            StringRef(Cpu0InstPrinter::getRegisterName(stackReg)).lower() +
            "," + Twine(stackSize) + ",$" +
            StringRef(Cpu0InstPrinter::getRegisterName(returnReg)).lower());
 }
 
-/// Emit Set directives.
+/// emit Set directives.
 const char *Cpu0AsmPrinter::getCurrentABIString() const {
   switch (static_cast<Cpu0TargetMachine &>(TM).getABI().GetEnumValue()) {
   case Cpu0ABIInfo::ABI::O32:  return "abiO32";
@@ -186,19 +186,19 @@ const char *Cpu0AsmPrinter::getCurrentABIString() const {
 //		.type	main,@function
 //->		.ent	main                    # @main
 //	main:
-void Cpu0AsmPrinter::EmitFunctionEntryLabel() {
+void Cpu0AsmPrinter::emitFunctionEntryLabel() {
   if (OutStreamer->hasRawTextSupport())
-    OutStreamer->EmitRawText("\t.ent\t" + Twine(CurrentFnSym->getName()));
-  OutStreamer->EmitLabel(CurrentFnSym);
+    OutStreamer->emitRawText("\t.ent\t" + Twine(CurrentFnSym->getName()));
+  OutStreamer->emitLabel(CurrentFnSym);
 }
 
 //  .frame  $sp,8,$pc
 //  .mask   0x00000000,0
 //->  .set  noreorder
 //@-> .set  nomacro
-/// EmitFunctionBodyStart - Targets can override this to emit stuff before
+/// emitFunctionBodyStart - Targets can override this to emit stuff before
 /// the first basic block in the function.
-void Cpu0AsmPrinter::EmitFunctionBodyStart() {
+void Cpu0AsmPrinter::emitFunctionBodyStart() {
   MCInstLowering.Initialize(&MF->getContext());
 
   emitFrameDirective();
@@ -207,45 +207,45 @@ void Cpu0AsmPrinter::EmitFunctionBodyStart() {
     SmallString<128> Str;
     raw_svector_ostream OS(Str);
     printSavedRegsBitmask(OS);
-    OutStreamer->EmitRawText(OS.str());
-    OutStreamer->EmitRawText(StringRef("\t.set\tnoreorder"));
-    OutStreamer->EmitRawText(StringRef("\t.set\tnomacro"));
+    OutStreamer->emitRawText(OS.str());
+    OutStreamer->emitRawText(StringRef("\t.set\tnoreorder"));
+    OutStreamer->emitRawText(StringRef("\t.set\tnomacro"));
     if (Cpu0MFI->getEmitNOAT())
-      OutStreamer->EmitRawText(StringRef("\t.set\tnoat"));
+      OutStreamer->emitRawText(StringRef("\t.set\tnoat"));
   }
 }
 
 //->	.set	macro
 //->	.set	reorder
 //->	.end	main
-/// EmitFunctionBodyEnd - Targets can override this to emit stuff after
+/// emitFunctionBodyEnd - Targets can override this to emit stuff after
 /// the last basic block in the function.
-void Cpu0AsmPrinter::EmitFunctionBodyEnd() {
+void Cpu0AsmPrinter::emitFunctionBodyEnd() {
   // There are instruction for this macros, but they must
   // always be at the function end, and we can't emit and
   // break with BB logic.
   if (OutStreamer->hasRawTextSupport()) {
     if (Cpu0MFI->getEmitNOAT())
-      OutStreamer->EmitRawText(StringRef("\t.set\tat"));
-    OutStreamer->EmitRawText(StringRef("\t.set\tmacro"));
-    OutStreamer->EmitRawText(StringRef("\t.set\treorder"));
-    OutStreamer->EmitRawText("\t.end\t" + Twine(CurrentFnSym->getName()));
+      OutStreamer->emitRawText(StringRef("\t.set\tat"));
+    OutStreamer->emitRawText(StringRef("\t.set\tmacro"));
+    OutStreamer->emitRawText(StringRef("\t.set\treorder"));
+    OutStreamer->emitRawText("\t.end\t" + Twine(CurrentFnSym->getName()));
   }
 }
 
 //	.section .mdebug.abi32
 //	.previous
-void Cpu0AsmPrinter::EmitStartOfAsmFile(Module &M) {
+void Cpu0AsmPrinter::emitStartOfAsmFile(Module &M) {
   // FIXME: Use SwitchSection.
 
   // Tell the assembler which ABI we are using
   if (OutStreamer->hasRawTextSupport())
-    OutStreamer->EmitRawText("\t.section .mdebug." +
+    OutStreamer->emitRawText("\t.section .mdebug." +
                             Twine(getCurrentABIString()));
 
   // return to previous section
   if (OutStreamer->hasRawTextSupport())
-    OutStreamer->EmitRawText(StringRef("\t.previous"));
+    OutStreamer->emitRawText(StringRef("\t.previous"));
 }
 
 void Cpu0AsmPrinter::PrinterDebugValueComment(const MachineInstr *MI,

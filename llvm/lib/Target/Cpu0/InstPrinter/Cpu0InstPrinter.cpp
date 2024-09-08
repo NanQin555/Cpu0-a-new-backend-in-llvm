@@ -28,13 +28,14 @@ using namespace llvm;
 #define PRINT_ALIAS_INSTR
 #include "Cpu0GenAsmWriter.inc"
 
-void Cpu0InstPrinter::printRegName(raw_ostream &OS, unsigned RegNo) const {
-  // getRegisterName(RegNo) defiend in Cpu0GenAsmWriter.inc which indicate in Cpu0.td
-  OS << '$' << StringRef(getRegisterName(RegNo)).lower();
+void Cpu0InstPrinter::printRegName(raw_ostream &OS, MCRegister Reg) const {
+  markup(OS, Markup::Register)
+      << '$' << StringRef(getRegisterName(Reg)).lower();
 }
 
-void Cpu0InstPrinter::printInst(const MCInst *MI, raw_ostream &O,
-                                StringRef Annot, const MCSubtargetInfo &STI) {
+void Cpu0InstPrinter::printInst(const MCInst *MI, uint64_t Address,
+                                StringRef Annot, const MCSubtargetInfo &STI,
+                                raw_ostream &O) {
   // Try to print any aliases first
   if (!printAliasInstr(MI, O))
     // printInstruction(MI, O) defined in Cpu0GenAsmWriter.inc which came from

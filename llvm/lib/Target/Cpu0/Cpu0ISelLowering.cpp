@@ -61,7 +61,7 @@ Cpu0TargetLowering::Cpu0TargetLowering(const Cpu0TargetMachine &TM,
     : TargetLowering(TM), Subtarget(STI), ABI(TM.getABI()) { 
   // Set .align 2,
   // It will emit .align 2 later
-  setMinFunctionAlignment(2);
+  setMinFunctionAlignment(Align(2));
 }
 
 const Cpu0TargetLowering *
@@ -222,5 +222,5 @@ Cpu0TargetLowering::Cpu0CC::Cpu0CC(
   Cpu0CC::SpecialCallingConvType SpecialCallingConv_)
   : CCInfo(Info), CallConv(CC), IsO32(IsO32_) {
   // Pre-allocate reserved argument area.
-  CCInfo.AllocateStack(reservedArgArea(), 1);
+  CCInfo.AllocateStack(reservedArgArea(), Align(1));
 }

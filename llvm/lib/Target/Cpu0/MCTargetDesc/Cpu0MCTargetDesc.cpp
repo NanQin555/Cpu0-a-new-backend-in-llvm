@@ -33,18 +33,6 @@
 
 using namespace llvm;
 
-// This part should be in Cpu0MCTargetDesc.hpp
-#define GET_REGINFO_ENUM
-#include "Cpu0GenRegisterInfo.inc"
-
-#define GET_INSTRINFO_ENUM
-#define GET_INSTRINFO_MC_HELPER_DECLS
-#include "Cpu0GenInstrInfo.inc"
-
-#define GET_SUBTARGETINFO_ENUM
-#include "Cpu0GenSubtargetInfo.inc"
-// Part of Cpu0TargetMachine.hpp end
-
 #define GET_INSTRINFO_MC_DESC
 #define ENABLE_INSTR_PREDICATE_VERIFIER
 #include "Cpu0GenInstrInfo.inc"

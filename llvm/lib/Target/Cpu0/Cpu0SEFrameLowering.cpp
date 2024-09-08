@@ -63,7 +63,7 @@ void Cpu0SEFrameLowering::emitPrologue(MachineFunction &MF,
 
   // emit ".cfi_def_cfa_offset StackSize"
   unsigned CFIIndex = MF.addFrameInst(
-    MCCFIInstruction::createDefCfaOffset(nullptr, -StackSize));
+    MCCFIInstruction::cfiDefCfaOffset(nullptr, -StackSize));
   BuildMI(MBB, MBBI, dl, TII.get(TargetOpcode::CFI_INSTRUCTION))
       .addCFIIndex(CFIIndex);
 

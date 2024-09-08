@@ -20,7 +20,7 @@ namespace llvm {
 
 class Cpu0SEDAGToDAGISel : public Cpu0DAGToDAGISel {
 public:
-  explicit Cpu0SEDAGToDAGISel(Cpu0TargetMachine &TM, CodeGenOpt::Level OL)
+  explicit Cpu0SEDAGToDAGISel(Cpu0TargetMachine &TM, CodeGenOptLevel OL)
       : Cpu0DAGToDAGISel(TM, OL) { }
 
 private:
@@ -34,7 +34,7 @@ private:
 
 // Create new instr selector, called in Cpu0TargetMachine.cpp for registrary pass
 FunctionPass *createCpu0SEISelDAG(Cpu0TargetMachine &TM,
-                                  CodeGenOpt::Level OptLevel);
+                                  CodeGenOptLevel OptLevel);
 
 } // end of llvm namespace
 

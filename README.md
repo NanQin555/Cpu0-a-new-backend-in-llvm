@@ -11,6 +11,15 @@ cmake -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=D
 ninja
 ```
 
+# test commands
+```
+build/bin/clang -target mips-unknown-linux-gnu -c test.cpp -emit-llvm -o test.bc
+
+build/bin/llvm-dis test.bc -o -
+
+build/bin/llc -march=cpu0 -relocation-model=pic -filetype=asm test.bc -o -
+```
+
 # understanding of TableGen
 How to generate .inc file while tablegen working?
 

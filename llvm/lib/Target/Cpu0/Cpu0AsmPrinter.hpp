@@ -58,15 +58,15 @@ public:
   virtual bool runOnMachineFunction(MachineFunction &MF) override;
 
   // EmitInstruction() must exists or will have run time error
-  void EmitInstruction(const MachineInstr *MI) override;
+  void emitInstruction(const MachineInstr *MI) override;
   void printSavedRegsBitmask(raw_ostream &O);
   void printHex32(unsigned int Value, raw_ostream &O);
   void emitFrameDirective();
   const char *getCurrentABIString() const;
-  void EmitFunctionEntryLabel() override;
-  void EmitFunctionBodyStart() override;
-  void EmitFunctionBodyEnd() override;
-  void EmitStartOfAsmFile(Module &M) override;
+  void emitFunctionEntryLabel() override;
+  void emitFunctionBodyStart() override;
+  void emitFunctionBodyEnd() override;
+  void emitStartOfAsmFile(Module &M) override;
   void PrinterDebugValueComment(const MachineInstr *MI, raw_ostream &OS);
 };
 } // end namespace llvm

@@ -29,7 +29,7 @@ using namespace llvm;
 
 #define DEBUG_TYPE "cpu0-subtarget"
 
-#define GET_SUBTARGETINFO_ENUM
+// #define GET_SUBTARGETINFO_ENUM
 #define GET_SUBTARGETINFO_TARGET_DESC
 #define GET_SUBTARGETINFO_CTOR
 #include "Cpu0GenSubtargetInfo.inc"
