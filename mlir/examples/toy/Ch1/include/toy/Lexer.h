@@ -51,7 +51,7 @@ enum Token : int {
 
 /// The Lexer is an abstract base class providing all the facilities that the
 /// Parser expects. It goes through the stream one token at a time and keeps
-/// track of the location in the file for debugging purposes.
+/// track of the location in the file for debugging purposes.0
 /// It relies on a subclass to provide a `readNextLine()` method. The subclass
 /// can proceed by reading the next line from the standard input or from a
 /// memory mapped file.
