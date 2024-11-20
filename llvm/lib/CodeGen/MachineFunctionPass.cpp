@@ -65,7 +65,7 @@ bool MachineFunctionPass::runOnFunction(Function &F) {
   // Check if the user asked for size remarks.
   bool ShouldEmitSizeRemarks =
       F.getParent()->shouldEmitInstrCountChangedRemark();
-
+  
   // If we want size remarks, collect the number of MachineInstrs in our
   // MachineFunction before the pass runs.
   if (ShouldEmitSizeRemarks)

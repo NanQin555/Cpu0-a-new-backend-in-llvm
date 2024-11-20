@@ -12,7 +12,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include "Cpu0SERegisterInfo.h"
+#include "Cpu0SERegisterInfo.hpp"
 
 using namespace llvm;
 

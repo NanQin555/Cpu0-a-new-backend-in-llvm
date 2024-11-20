@@ -1,3 +1,20 @@
+# How to debug
+
+``` shell
+clang -march=riscv64 -emit-llvm -S *.c 
+# get *.ll
+
+llc 
+
+
+clang -emit-llvm --target=riscv64-unknown-linux-gnu *.c
+# get *.ll
+llvm-as *.ll
+# get *.bc
+llc *.bc
+# get riscv arch *.s
+```
+
 # Cpu0: a new backend in llvm 
 This project is just a practice while learning llvm project.
 
@@ -24,9 +41,6 @@ build/bin/llc -march=cpu0 -relocation-model=pic -filetype=asm test.bc -o -
 How to generate .inc file while tablegen working?
 
 What's the structure of .inc file?
-
-
-
 
 # backend structure
 ## RISCV 
@@ -126,3 +140,4 @@ add_llvm_target(Cpu0CodeGen
 # Resources:
 1. [LLVM 后端实践笔记 by P2Tree](https://zhuanlan.zhihu.com/p/351848328)
 2. [《Tutorial: Creating an LLVM Backend for the Cpu0 Architecture》](https://jonathan2251.github.io/lbd/about.html)
+

@@ -11,23 +11,25 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include "Cpu0Subtarget.h"
+#include "Cpu0Subtarget.hpp"
 
-#include "Cpu0MachineFunction.h"
+#include "Cpu0MachineFunctionInfo.hpp"
 #include "Cpu0.h"
-#include "Cpu0RegisterInfo.h"
+#include "Cpu0RegisterInfo.hpp"
 
-#include "Cpu0TargetMachine.h"
+#include "Cpu0TargetMachine.hpp"
 #include "llvm/IR/Attributes.h"
 #include "llvm/IR/Function.h"
 #include "llvm/Support/CommandLine.h"
 #include "llvm/Support/ErrorHandling.h"
-#include "llvm/Support/TargetRegistry.h"
+#include "llvm/MC/TargetRegistry.h"
 
+ 
 using namespace llvm;
 
 #define DEBUG_TYPE "cpu0-subtarget"
 
+// #define GET_SUBTARGETINFO_ENUM
 #define GET_SUBTARGETINFO_TARGET_DESC
 #define GET_SUBTARGETINFO_CTOR
 #include "Cpu0GenSubtargetInfo.inc"
@@ -36,13 +38,11 @@ extern bool FixGlobalBaseReg;
 
 void Cpu0Subtarget::anchor() { }
 
-//@1 {
-Cpu0Subtarget::Cpu0Subtarget(const Triple &TT, StringRef CPU,
-                             StringRef FS, bool little, 
+Cpu0Subtarget::Cpu0Subtarget(const Triple &TT, const StringRef &CPU,
+                             const StringRef &FS, bool little,
                              const Cpu0TargetMachine &_TM) :
-//@1 }
   // Cpu0GenSubtargetInfo will display features by llc -march=cpu0 -mcpu=help
-  Cpu0GenSubtargetInfo(TT, CPU, /*TuneCPU*/ CPU, FS),
+  Cpu0GenSubtargetInfo(TT, CPU, /*TuneCpu*/CPU, FS),
   IsLittle(little), TM(_TM), TargetTriple(TT), TSInfo(),
       InstrInfo(
           Cpu0InstrInfo::create(initializeSubtargetDependencies(CPU, FS, TM))),
@@ -75,7 +75,7 @@ Cpu0Subtarget::initializeSubtargetDependencies(StringRef CPU, StringRef FS,
            <<  "CPU = " << CPU << "\n";
     exit(0);
   }
-  
+
   if (CPU == "cpu032I")
     Cpu0ArchVersion = Cpu032I;
   else if (CPU == "cpu032II")
@@ -86,7 +86,7 @@ Cpu0Subtarget::initializeSubtargetDependencies(StringRef CPU, StringRef FS,
     HasSlt = false;
   }
   else if (isCpu032II()) {
-    HasCmp = false;
+    HasCmp = true;
     HasSlt = true;
   }
   else {
@@ -94,7 +94,7 @@ Cpu0Subtarget::initializeSubtargetDependencies(StringRef CPU, StringRef FS,
   }
 
   // Parse features string.
-  ParseSubtargetFeatures(CPU, /*TuneCPU*/ CPU, FS);
+  ParseSubtargetFeatures(CPU, CPU, FS);
   // Initialize scheduling itinerary for the specified CPU.
   InstrItins = getInstrItineraryForCPU(CPU);
 
